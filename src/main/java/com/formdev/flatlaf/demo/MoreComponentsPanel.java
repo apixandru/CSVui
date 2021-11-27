@@ -476,17 +476,6 @@ class MoreComponentsPanel
 		add(splitPane3, "cell 1 11 4 1,grow");
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 
-		if( FlatLafDemo.screenshotsMode ) {
-			Component[] components = new Component[] {
-				indeterminateCheckBox,
-				toolTipLabel, toolTip1, toolTip2,
-				toolBarLabel, toolBar1, toolBar2,
-				splitPaneLabel, splitPane3,
-			};
-
-			for( Component c : components )
-				c.setVisible( false );
-		}
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables

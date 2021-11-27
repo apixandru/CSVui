@@ -50,9 +50,7 @@ import net.miginfocom.swing.*;
 /**
  * @author Karl Tauber
  */
-class DemoFrame
-	extends JFrame
-{
+class DemoFrame extends JFrame {
 	private final String[] availableFontFamilyNames;
 	private int initialFontMenuItemCount = -1;
 
@@ -382,7 +380,8 @@ class DemoFrame
 		BasicComponentsPanel basicComponentsPanel = new BasicComponentsPanel();
 		MoreComponentsPanel moreComponentsPanel = new MoreComponentsPanel();
 		DataComponentsPanel dataComponentsPanel = new DataComponentsPanel();
-		TabsPanel tabsPanel = new TabsPanel();
+		TabsPanel2 tabsPanel = new TabsPanel2();
+//		TabsPanel tabsPanel = new TabsPanel();
 		OptionPanePanel optionPanePanel = new OptionPanePanel();
 		ExtrasPanel extrasPanel1 = new ExtrasPanel();
 		controlBar = new ControlBar();

@@ -670,32 +670,6 @@ class BasicComponentsPanel
 		copyMenuItem.addActionListener( new DefaultEditorKit.CopyAction() );
 		pasteMenuItem.addActionListener( new DefaultEditorKit.PasteAction() );
 
-		if( FlatLafDemo.screenshotsMode ) {
-			Component[] components = {
-				button13, button14, button15, button16, comboBox5, comboBox6,
-				textField6, passwordField5,
-
-				formattedTextFieldLabel, formattedTextField1, formattedTextField2, formattedTextField3, formattedTextField4, formattedTextField5,
-				textAreaLabel, scrollPane1, scrollPane2, scrollPane3, scrollPane4, textArea5,
-				editorPaneLabel, scrollPane5, scrollPane6, scrollPane7, scrollPane8, editorPane5,
-				textPaneLabel, scrollPane9, scrollPane10, scrollPane11, scrollPane12, textPane5,
-
-				errorHintsLabel, errorHintsTextField, errorHintsComboBox, errorHintsSpinner,
-				warningHintsLabel, warningHintsTextField, warningHintsComboBox, warningHintsSpinner,
-			};
-
-			for( Component c : components )
-				c.setVisible( false );
-
-			// move password fields one row up
-			Component[] formattedTextFields = { formattedTextFieldLabel, formattedTextField1, formattedTextField2, formattedTextField3, formattedTextField4 };
-			Component[] passwordFields = { passwordFieldLabel, passwordField1, passwordField2, passwordField3, passwordField4 };
-			MigLayout layout = (MigLayout) getLayout();
-			for( int i = 0; i < passwordFields.length; i++ ) {
-				Object cons = layout.getComponentConstraints( formattedTextFields[i] );
-				layout.setComponentConstraints( passwordFields[i], cons );
-			}
-		}
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables

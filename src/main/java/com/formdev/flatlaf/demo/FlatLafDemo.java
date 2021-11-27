@@ -32,16 +32,10 @@ public class FlatLafDemo {
     static final String PREFS_ROOT_PATH = "/flatlaf-demo";
     static final String KEY_TAB = "tab";
 
-    static boolean screenshotsMode = Boolean.parseBoolean(System.getProperty("flatlaf.demo.screenshotsMode"));
-
     public static void main(String[] args) {
         // on macOS enable screen menu bar
         if (SystemInfo.isMacOS && System.getProperty("apple.laf.useScreenMenuBar") == null) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
-        }
-
-        if (FlatLafDemo.screenshotsMode && !SystemInfo.isJava_9_orLater && System.getProperty("flatlaf.uiScale") == null) {
-            System.setProperty("flatlaf.uiScale", "2x");
         }
 
         SwingUtilities.invokeLater(() -> {
@@ -57,14 +51,7 @@ public class FlatLafDemo {
             FlatInspector.install("ctrl shift alt X");
             FlatUIDefaultsInspector.install("ctrl shift alt Y");
 
-            // create frame
             DemoFrame frame = new DemoFrame();
-
-            if (FlatLafDemo.screenshotsMode) {
-                frame.setPreferredSize(new Dimension(1660, 840));
-            }
-
-            // show frame
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
