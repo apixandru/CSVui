@@ -11,6 +11,8 @@ import java.awt.dnd.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import static com.apixandru.csvui.main.DndUtils.getTransferData;
+
 public class DnDCloseButtonTabbedPane extends JTabbedPane {
 
     public static final long serialVersionUID = 1L;
@@ -49,7 +51,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
 
             @Override
             public void dragOver(DragSourceDragEvent e) {
-                TabTransferData data = getTabTransferData(e);
+                TabTransferData data = getTransferData(e, FLAVOR);
 
                 if (data == null) {
                     e.getDragSourceContext().setCursor(
@@ -74,7 +76,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
                     DraggableFrame frame = FrameFactory.createFrame(e.getLocation());
 
                     frame.getTabbedPane()
-                            .convertTab(getTabTransferData(e), getTargetTabIndex(e.getLocation()));
+                            .convertTab(getTransferData(e, FLAVOR), getTargetTabIndex(e.getLocation()));
                 }
                 disposeMaybe();
             }
@@ -119,52 +121,6 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
         tab.setBorder(BorderFactory.createEmptyBorder(2, 1, 1, 1));
         super.addTab(title, component);
         setTabComponentAt(indexOfComponent(component), tab);
-    }
-
-    private TabTransferData getTabTransferData(DropTargetDropEvent a_event) {
-        try {
-            TabTransferData data = (TabTransferData) a_event.getTransferable().getTransferData(FLAVOR);
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private TabTransferData getTabTransferData(DropTargetDragEvent a_event) {
-        try {
-            TabTransferData data = (TabTransferData) a_event.getTransferable().getTransferData(FLAVOR);
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private TabTransferData getTabTransferData(DragSourceDragEvent a_event) {
-        try {
-            TabTransferData data = (TabTransferData) a_event.getDragSourceContext()
-                    .getTransferable().getTransferData(FLAVOR);
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private TabTransferData getTabTransferData(DragSourceDropEvent a_event) {
-        try {
-            TabTransferData data = (TabTransferData) a_event.getDragSourceContext()
-                    .getTransferable().getTransferData(FLAVOR);
-            return data;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     class TabTransferable implements Transferable {
@@ -246,7 +202,11 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
         }
 
         public void dragOver(final DropTargetDragEvent e) {
-            TabTransferData data = getTabTransferData(e);
+            Transferable transferable = e.getTransferable();
+            if (!transferable.isDataFlavorSupported(FLAVOR)) {
+                return;
+            }
+            TabTransferData data = getTransferData(e, FLAVOR);
 
             if (getTabPlacement() == JTabbedPane.TOP
                     || getTabPlacement() == JTabbedPane.BOTTOM) {
@@ -263,13 +223,16 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
         }
 
         @Override
-        public void drop(DropTargetDropEvent a_event) {
-            if (isDropAcceptable(a_event)) {
-                convertTab(getTabTransferData(a_event),
-                        getTargetTabIndex(a_event.getLocation()));
-                a_event.dropComplete(true);
+        public void drop(DropTargetDropEvent event) {
+            if (!event.isDataFlavorSupported(FLAVOR)) {
+                return;
+            }
+            if (isDropAcceptable(event)) {
+                convertTab(getTransferData(event, FLAVOR),
+                        getTargetTabIndex(event.getLocation()));
+                event.dropComplete(true);
             } else {
-                a_event.dropComplete(false);
+                event.dropComplete(false);
             }
 
             m_isDrawRect = false;
@@ -277,6 +240,9 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
         }
 
         public boolean isDragAcceptable(DropTargetDragEvent e) {
+            if (!e.isDataFlavorSupported(FLAVOR)) {
+                return false;
+            }
             Transferable t = e.getTransferable();
             if (t == null) {
                 return false;
@@ -287,7 +253,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
                 return false;
             }
 
-            TabTransferData data = getTabTransferData(e);
+            TabTransferData data = getTransferData(e, FLAVOR);
 
             if (DnDCloseButtonTabbedPane.this == data.getTabbedPane()
                     && data.getTabIndex() >= 0) {
@@ -305,7 +271,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
                     break;
                 }
             }
-            if (transferDataFlavorFound == false) {
+            if (!transferDataFlavorFound) {
                 return false;
             }
             return false;
@@ -323,7 +289,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
                 return false;
             }
 
-            TabTransferData data = getTabTransferData(e);
+            TabTransferData data = getTransferData(e, FLAVOR);
 
             if (DnDCloseButtonTabbedPane.this == data.getTabbedPane()
                     && data.getTabIndex() >= 0) {

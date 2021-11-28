@@ -22,7 +22,6 @@ public class TabsPanel2 extends JPanel {
     public TabsPanel2(JFrame frame) {
         this.frame = frame;
         setPreferredSize(new Dimension(640, 480));
-        setBackground(Color.red);
         initComponents();
         tabPlacementTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
         initClosableTabs(tabPlacementTabbedPane);
