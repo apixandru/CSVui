@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package com.formdev.flatlaf.demo;
+package com.apixandru.csvui.main;
 
 import com.apixandru.csvui.main.FrameFactory;
 import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.demo.DemoPrefs;
 import com.formdev.flatlaf.extras.FlatInspector;
 import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.formdev.flatlaf.util.SystemInfo;
@@ -27,7 +28,7 @@ import javax.swing.*;
 /**
  * @author Karl Tauber
  */
-public class FlatLafDemo {
+public class CsvUiMain {
 
     static final String PREFS_ROOT_PATH = "/flatlaf-demo";
     static final String KEY_TAB = "tab";
@@ -51,10 +52,9 @@ public class FlatLafDemo {
             FlatInspector.install("ctrl shift alt X");
             FlatUIDefaultsInspector.install("ctrl shift alt Y");
 
-            DemoFrame frame = new DemoFrame();
-            frame.pack();
-            frame.setLocationRelativeTo( null );
-            frame.setVisible( true );
+            FrameFactory.createMainFrame()
+                    .getContentPane()
+                    .newTab();
 
         });
     }

@@ -1,4 +1,4 @@
-package com.formdev.flatlaf.demo;
+package com.apixandru.csvui.main;
 
 import com.apixandru.csvui.main.DnDCloseButtonTabbedPane;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -30,19 +30,18 @@ public class TabsPanel2 extends JPanel {
     }
 
     public void newTab() {
-        int nextId = numTabs + 1;
-        addTab(tabPlacementTabbedPane, "New tab " + nextId, "Placeholder " + nextId);
+        numTabs++;
+        addTab(tabPlacementTabbedPane, "New tab " + numTabs, "Placeholder " + numTabs);
     }
 
     private void addTab(JTabbedPane tabbedPane, String title, String text) {
         SwingUtilities.invokeLater(() -> {
-            tabbedPane.addTab(title, createTab(text));
+            tabbedPane.addTab(title, "New tab 1".equals(title) ? new DataComponentsPanel() : createTab(text));
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         });
     }
 
     private JComponent createTab(String text) {
-        numTabs++;
         if (text == null) {
             text = "Tab #" + numTabs;
         }

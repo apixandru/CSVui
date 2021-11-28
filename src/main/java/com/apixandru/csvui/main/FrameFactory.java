@@ -1,4 +1,6 @@
-package com.formdev.flatlaf.demo;
+package com.apixandru.csvui.main;
+
+import com.apixandru.csvui.main.DraggableFrame;
 
 import javax.swing.*;
 import java.awt.*;

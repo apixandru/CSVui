@@ -1,8 +1,5 @@
 package com.apixandru.csvui.main;
 
-import com.formdev.flatlaf.demo.DraggableFrame;
-import com.formdev.flatlaf.demo.FrameFactory;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
