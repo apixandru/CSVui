@@ -1,11 +1,11 @@
 package com.apixandru.csvui.main;
 
-import com.apixandru.csvui.main.DnDCloseButtonTabbedPane;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.icons.FlatTabbedPaneCloseIcon;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -27,6 +27,8 @@ public class TabsPanel2 extends JPanel {
         initClosableTabs(tabPlacementTabbedPane);
 
         addNewTabButton();
+
+
     }
 
     public void newTab() {
@@ -34,9 +36,19 @@ public class TabsPanel2 extends JPanel {
         addTab(tabPlacementTabbedPane, "New tab " + numTabs, "Placeholder " + numTabs);
     }
 
+    public void newTab(File file) {
+        numTabs++;
+        addTab(tabPlacementTabbedPane, file.getName(), new CsvReaderPanel(file));
+    }
+
     private void addTab(JTabbedPane tabbedPane, String title, String text) {
+        Component component = "New tab 1".equals(title) ? new DataComponentsPanel() : createTab(text);
+        addTab(tabbedPane, title, component);
+    }
+
+    private void addTab(JTabbedPane tabbedPane, String title, Component component) {
         SwingUtilities.invokeLater(() -> {
-            tabbedPane.addTab(title, "New tab 1".equals(title) ? new DataComponentsPanel() : createTab(text));
+            tabbedPane.addTab(title, component);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
         });
     }
@@ -105,7 +117,7 @@ public class TabsPanel2 extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        tabPlacementTabbedPane = new DnDCloseButtonTabbedPane(frame);
+        tabPlacementTabbedPane = new DnDCloseButtonTabbedPane(this, frame);
 
         tabPlacementTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         add(tabPlacementTabbedPane, BorderLayout.CENTER);
@@ -118,6 +130,10 @@ public class TabsPanel2 extends JPanel {
 
     public DnDCloseButtonTabbedPane getTabPlacementTabbedPane() {
         return tabPlacementTabbedPane;
+    }
+
+    public void openFile(File file) {
+        newTab(file);
     }
 
 }

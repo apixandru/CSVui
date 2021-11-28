@@ -7,6 +7,8 @@ import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.List;
 
 import static com.apixandru.csvui.main.DndUtils.getTransferData;
 
@@ -28,7 +30,7 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
 
     private final JFrame frame;
 
-    public DnDCloseButtonTabbedPane(JFrame frame) {
+    public DnDCloseButtonTabbedPane(TabsPanel2 tabs, JFrame frame) {
         this.frame = frame;
         final DragSourceListener dsl = new DragSourceListener() {
             @Override
@@ -104,6 +106,23 @@ public class DnDCloseButtonTabbedPane extends JTabbedPane {
         };
 
         dropTarget = new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new CDropTargetListener(), true);
+
+        DropTarget dropTarget = new DropTarget(this, DnDConstants.ACTION_COPY_OR_MOVE, new DropTargetAdapter() {
+            @Override
+            public synchronized void drop(DropTargetDropEvent evt) {
+                try {
+                    evt.acceptDrop(DnDConstants.ACTION_COPY);
+                    java.util.List<File> droppedFiles = (List<File>) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    for (File file : droppedFiles) {
+                        tabs.openFile(file);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }, true);
+
+
         new DragSource().createDefaultDragGestureRecognizer(this,
                 DnDConstants.ACTION_COPY_OR_MOVE, dgl);
     }
