@@ -1,23 +1,26 @@
 package com.formdev.flatlaf.demo;
 
+import com.apixandru.csvui.main.DnDCloseButtonTabbedPane;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.icons.FlatTabbedPaneCloseIcon;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.formdev.flatlaf.FlatClientProperties.*;
 
-class TabsPanel2 extends JPanel {
+public class TabsPanel2 extends JPanel {
+
+    private final JFrame frame;
 
     int numTabs = 0;
 
-    private JTabbedPane tabPlacementTabbedPane;
+    private DnDCloseButtonTabbedPane tabPlacementTabbedPane;
 
-    TabsPanel2() {
+    public TabsPanel2(JFrame frame) {
+        this.frame = frame;
         setPreferredSize(new Dimension(640, 480));
         setBackground(Color.red);
         initComponents();
@@ -27,8 +30,16 @@ class TabsPanel2 extends JPanel {
         addNewTabButton();
     }
 
+    public void newTab() {
+        int nextId = numTabs + 1;
+        addTab(tabPlacementTabbedPane, "New tab " + nextId, "Placeholder " + nextId);
+    }
+
     private void addTab(JTabbedPane tabbedPane, String title, String text) {
-        tabbedPane.addTab(title, createTab(text));
+        SwingUtilities.invokeLater(() -> {
+            tabbedPane.addTab(title, createTab(text));
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        });
     }
 
     private JComponent createTab(String text) {
@@ -44,11 +55,17 @@ class TabsPanel2 extends JPanel {
         return tab;
     }
 
-    private void initClosableTabs(JTabbedPane tabbedPane) {
+    private void initClosableTabs(DnDCloseButtonTabbedPane tabbedPane) {
         tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSABLE, true);
         tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
         tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
-                (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> tabbedPane.removeTabAt(tabIndex));
+                (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
+                    tabbedPane.removeTabAt(tabIndex);
+                    if (tabbedPane.disposeMaybe()) {
+                        newTab();
+                    }
+                    repaint();
+                });
     }
 
     private void addNewTabButton() {
@@ -56,12 +73,7 @@ class TabsPanel2 extends JPanel {
         trailing.setFloatable(false);
         trailing.setBorder(null);
         JButton button = new JButton(new FlatSVGIcon("com/formdev/flatlaf/demo/icons/add.svg"));
-        button.addActionListener(e -> {
-            int tabCount = tabPlacementTabbedPane.getTabCount();
-            int uniqueId = numTabs + 1;
-            addTab(tabPlacementTabbedPane, "Tab " + uniqueId, "tab content " + uniqueId);
-            tabPlacementTabbedPane.setSelectedIndex(tabCount);
-        });
+        button.addActionListener(e -> newTab());
         trailing.add(button);
         tabPlacementTabbedPane.putClientProperty(TABBED_PANE_TRAILING_COMPONENT, trailing);
     }
@@ -95,7 +107,7 @@ class TabsPanel2 extends JPanel {
 
     private void initComponents() {
         setLayout(new BorderLayout());
-        tabPlacementTabbedPane = new JTabbedPane();
+        tabPlacementTabbedPane = new DnDCloseButtonTabbedPane(frame);
 
         tabPlacementTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         add(tabPlacementTabbedPane, BorderLayout.CENTER);
@@ -104,6 +116,10 @@ class TabsPanel2 extends JPanel {
         putTabbedPanesClientProperty(TABBED_PANE_SHOW_TAB_SEPARATORS, true);
         putTabbedPanesClientProperty(TABBED_PANE_SCROLL_BUTTONS_PLACEMENT, TABBED_PANE_PLACEMENT_TRAILING);
         putTabbedPanesClientProperty(TABBED_PANE_TABS_POPUP_POLICY, null);
+    }
+
+    public DnDCloseButtonTabbedPane getTabPlacementTabbedPane() {
+        return tabPlacementTabbedPane;
     }
 
 }

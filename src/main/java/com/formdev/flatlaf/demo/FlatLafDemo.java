@@ -51,11 +51,10 @@ public class FlatLafDemo {
             FlatInspector.install("ctrl shift alt X");
             FlatUIDefaultsInspector.install("ctrl shift alt Y");
 
-            JFrame frame = new DraggableFrame();
-//            DemoFrame frame = new DemoFrame();
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            FrameFactory.createMainFrame()
+                    .getContentPane()
+                    .newTab();
+
         });
     }
 

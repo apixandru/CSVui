@@ -380,8 +380,7 @@ class DemoFrame extends JFrame {
 		BasicComponentsPanel basicComponentsPanel = new BasicComponentsPanel();
 		MoreComponentsPanel moreComponentsPanel = new MoreComponentsPanel();
 		DataComponentsPanel dataComponentsPanel = new DataComponentsPanel();
-		TabsPanel2 tabsPanel = new TabsPanel2();
-//		TabsPanel tabsPanel = new TabsPanel();
+		TabsPanel tabsPanel = new TabsPanel();
 		OptionPanePanel optionPanePanel = new OptionPanePanel();
 		ExtrasPanel extrasPanel1 = new ExtrasPanel();
 		controlBar = new ControlBar();
