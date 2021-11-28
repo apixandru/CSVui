@@ -1,5 +1,7 @@
 package com.apixandru.csvui.main;
 
+import com.apixandru.csvui.main.tables.TableUtils;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -10,6 +12,9 @@ class DataComponentsPanel extends JPanel {
     private JTable table1;
 
     DataComponentsPanel() {
+//        setBackground(new Color(0xeeeeee));
+
+//        setBackground(new Color(0xeeeeee));
         initComponents();
     }
 
@@ -39,7 +44,6 @@ class DataComponentsPanel extends JPanel {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void initComponents() {
-        JScrollPane scrollPane5 = new JScrollPane();
         table1 = new JTable();
         setLayout(new BorderLayout());
 
@@ -62,7 +66,7 @@ class DataComponentsPanel extends JPanel {
                             {"item 12", null, "December", null, null, null},
                     },
                     new String[]{
-                            "Not editable", "Text", "Combo", "Combo Editable", "Integer", "Boolean"
+                            "A", "B", "C", "D", "E", "F"
                     }
             ) {
                 final Class<?>[] columnTypes = new Class<?>[]{
@@ -115,17 +119,19 @@ class DataComponentsPanel extends JPanel {
                                 "December"
                         }))));
             }
-            table1.setAutoCreateRowSorter(true);
-            scrollPane5.setViewportView(table1);
+//            table1.setAutoCreateRowSorter(true);
+//            scrollPane5.setViewportView(table1);
         }
-        add(scrollPane5, BorderLayout.CENTER);
+        JScrollPane comp = TableUtils.scrollableTableView(table1);
+        add(comp, BorderLayout.CENTER);
+//        add(scrollPane5, BorderLayout.CENTER);
 
         table1.setShowHorizontalLines(true);
         table1.setShowVerticalLines(true);
         table1.setIntercellSpacing(new Dimension(1, 1));
         table1.setRowSelectionAllowed(true);
         table1.setColumnSelectionAllowed(true);
-//            redGridColorChanged()
+//            redGridColorChanged();
 
         DefaultCellEditor cellEditor = (DefaultCellEditor) table1.getColumnModel()
                 .getColumn(3)
