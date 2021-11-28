@@ -51,7 +51,8 @@ public class FlatLafDemo {
             FlatInspector.install("ctrl shift alt X");
             FlatUIDefaultsInspector.install("ctrl shift alt Y");
 
-            DemoFrame frame = new DemoFrame();
+            JFrame frame = new DraggableFrame();
+//            DemoFrame frame = new DemoFrame();
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
